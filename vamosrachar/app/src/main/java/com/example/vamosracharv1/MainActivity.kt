@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import java.text.NumberFormat
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var tts: TextToSpeech
     private lateinit var resultTextView: TextView
     private var valorPorPessoa: Double = 0.0
+    private var currency = NumberFormat.getCurrencyInstance(Locale("pt", "BR"));
+    private var resultadoFormatado : String = currency.format(0.0);
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -34,36 +38,31 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         resultTextView = findViewById(R.id.textView5);
         tts = TextToSpeech(this, this);
 
-        totalValueEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // não faz nada antes do texto mudar
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // não faz nada quando o texto mudar
-                calcularDivisao();
-            }
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
-        numberOfPeopleEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // não faz nada antes do texto mudar
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // não faz nada quando o texto mudar
-                calcularDivisao();
-            }
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
+        monitorarEditText(numberOfPeopleEditText);
+        monitorarEditText(totalValueEditText);
+
+
+
         calculateButton.setOnClickListener {
-            falarResultado("O valor a ser pagado por ambas as pessoas é ${"%.2f".format(valorPorPessoa)}");
+            falarResultado("O valor a ser pago por cada a pessoa é ${resultadoFormatado}");
         }
         shareButton.setOnClickListener {
             onShareButtonClick(shareButton);
         }
     }
-
+    private fun monitorarEditText(editText : EditText){
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // não faz nada antes do texto mudar
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // não faz nada quando o texto mudar
+                calcularDivisao();
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
 
     // Método responsável por fazer o cálculo da divisão
     private fun calcularDivisao() {
@@ -73,13 +72,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Verifica se os campos foram preenchidos corretamente
         if (valorTotal == null || numeroPessoas == null || numeroPessoas == 0) {
             resultTextView.text = "R$ 0,00"
-            valorPorPessoa = 0.0
+            resultadoFormatado = currency.format(0.0)
             falarResultado("Preencha todos os campos");
             return
         }
         valorPorPessoa = valorTotal / numeroPessoas
+        resultadoFormatado = currency.format(valorPorPessoa)
 
-        resultTextView.text = "R$ ${"%.2f".format(valorPorPessoa)}"
+        resultTextView.text = "${resultadoFormatado}"
     }
     // Método responsável por falar o resultado da divisão
     private fun falarResultado(mensagem: String) {
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     fun onShareButtonClick(view: View) {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "O valor final é R$ ${"%.2f".format(valorPorPessoa)}")
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "O valor final é ${resultadoFormatado}")
         startActivity(Intent.createChooser(shareIntent, "Compartilhar valor final"))
     }
 
