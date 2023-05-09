@@ -57,14 +57,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
         })
         calculateButton.setOnClickListener {
-            falarResultado("O valor a ser pagado por ambas as pessoas é ${"%.2f".format(valorPorPessoa)}");
+            falarResultado("O valor a ser pago por cada pessoas é ${"%.2f".format(valorPorPessoa)}");
         }
         shareButton.setOnClickListener {
             onShareButtonClick(shareButton);
         }
     }
 
-
+    
     // Método responsável por fazer o cálculo da divisão
     private fun calcularDivisao() {
         val valorTotal = totalValueEditText.text.toString().toDoubleOrNull();
