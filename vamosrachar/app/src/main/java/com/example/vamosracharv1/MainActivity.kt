@@ -1,5 +1,4 @@
 package com.example.vamosracharv1
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,11 +10,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
 import java.text.NumberFormat
-import kotlin.properties.Delegates
+
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var totalValueEditText: EditText
@@ -41,8 +38,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         monitorarEditText(numberOfPeopleEditText);
         monitorarEditText(totalValueEditText);
 
-
-
         calculateButton.setOnClickListener {
             falarResultado("O valor a ser pago por cada a pessoa é ${resultadoFormatado}");
         }
@@ -50,6 +45,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             onShareButtonClick(shareButton);
         }
     }
+
     private fun monitorarEditText(editText : EditText){
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -81,10 +77,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         resultTextView.text = "${resultadoFormatado}"
     }
+    
     // Método responsável por falar o resultado da divisão
     private fun falarResultado(mensagem: String) {
         tts.speak(mensagem, TextToSpeech.QUEUE_FLUSH, null, "")
     }
+
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             // Configura a linguagem padrão
@@ -97,11 +95,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             Log.e("TTS", "Falha ao inicializar o TextToSpeech")
         }
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        tts.stop()
-        tts.shutdown()
-    }
 
     fun onShareButtonClick(view: View) {
         val shareIntent = Intent(Intent.ACTION_SEND)
@@ -110,5 +103,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         startActivity(Intent.createChooser(shareIntent, "Compartilhar valor final"))
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        tts.stop()
+        tts.shutdown()
+    }
 }
