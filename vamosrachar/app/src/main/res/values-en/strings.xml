@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Let\'s split the bill</string>
+    <string name="titulo">Let\'s split the bill!</string>
+    <string name="valorTotal">Total value:</string>
+    <string name="valorTotalHint">Insert the total value</string>
+    <string name="numeroPessoas">Number\nof people:</string>
+    <string name="numeroPessoasHint">Insert the number of people</string>
+    <string name="textoOuvir">Listen</string>
+    <string name="textoCompartilhar">Share</string>
+    <string name="textoFalado">The amount to be paid per person is</string>
+</resources>

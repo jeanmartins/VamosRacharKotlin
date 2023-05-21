@@ -1,4 +1,5 @@
 package com.example.vamosracharv1
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,9 +23,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var tts: TextToSpeech
     private lateinit var resultTextView: TextView
     private var valorPorPessoa: Double = 0.0
-    private var currency = NumberFormat.getCurrencyInstance(Locale("pt", "BR"));
+    private var currency = NumberFormat.getCurrencyInstance(Locale.getDefault());
     private var resultadoFormatado : String = currency.format(0.0);
 
+    @SuppressLint("StringFormatInvalid")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -39,7 +41,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         monitorarEditText(totalValueEditText);
 
         calculateButton.setOnClickListener {
-            falarResultado("O valor a ser pago por cada a pessoa é ${resultadoFormatado}");
+            val mensagem = getString(R.string.textoFalado)
+            falarResultado("$mensagem ${resultadoFormatado}");
         }
         shareButton.setOnClickListener {
             onShareButtonClick(shareButton);

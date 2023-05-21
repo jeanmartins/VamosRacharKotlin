@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">vamosracharv1</string>
+    <string name="app_name">Vamos Rachar</string>
+    <string name="titulo">Vamos Rachar!</string>
+    <string name="valorTotal">Valor Total:</string>
+    <string name="valorTotalHint">Insira o valor total</string>
+    <string name="numeroPessoas">Número\nde Pessoas:</string>
+    <string name="numeroPessoasHint">Insira o número de pessoas</string>
+    <string name="textoOuvir">Ouvir</string>
+    <string name="textoCompartilhar">Compartilhar</string>
+    <string name="textoFalado">O valor a ser pago por cada a pessoa é</string>
+
 </resources>
